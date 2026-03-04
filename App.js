@@ -229,7 +229,7 @@ export default function App() {
       params.append('formType', 'cast'); 
 
       // ⚠️ あなたのGASのURLに書き換えてください
-      await fetch("YOUR_GAS_URL", { 
+      await fetch("https://script.google.com/macros/s/AKfycbwe4yl5he09Fsb_a8WtMV0PZX36q0VxIyPZK0c1X0EMHkC6ZCr9fLrPFRjd2ZJNt9yKVQ/exec", { 
         method: 'POST', 
         mode: 'no-cors', 
         body: params.toString() 
