@@ -220,21 +220,25 @@ export default function App() {
 
     setIsSubmitting(true);
 setIsSubmitting(true);
-    try {
-      // フォームのデータをURLパラメータ形式に変換
-      const params = new URLSearchParams(form);
-      
-      // 送信日時と、GAS側で振り分けるための目印（formType）を追加
-      params.append('timestamp', new Date().toLocaleString('ja-JP'));
-      params.append('formType', 'cast'); 
+try {
+      const searchParams = new URLSearchParams();
+      Object.keys(form).forEach(key => {
+        if (Array.isArray(form[key])) { 
+          searchParams.append(key, form[key].join(', ')); 
+        } else { 
+          searchParams.append(key, form[key]); 
+        }
+      });
+      searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
+      searchParams.append('formType', 'cast'); 
 
-      // ⚠️ あなたのGASのURLに書き換えてください
-      await fetch("https://script.google.com/macros/s/AKfycbyjtMMuhznRx_hjAia2oZaTViiCfYSmvb4y2bRbHddbQbg0oyELXS9EmMGjlJLKIIBm1g/exec", { 
+      await fetch("https://script.google.com/macros/s/AKfycbxeeqsgOqpOjDCntv2F8Ry2f2gzqqbQUSYsJy0zkTCQOQPS2fE6_FgLIZ0ivz6AZqmjCA/exec", { 
         method: 'POST', 
         mode: 'no-cors', 
-        body: params.toString() 
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: searchParams.toString() 
       });
-      
+      // ...以下略
       setIsSent(true);
     } catch (e) { 
       setSubmitError("通信エラーが発生しました。"); 
