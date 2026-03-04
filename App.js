@@ -219,10 +219,28 @@ export default function App() {
     if (!isAgreed) { setSubmitError("同意チェックをオンにしてください。"); return; }
 
     setIsSubmitting(true);
+    setIsSubmitting(true);
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbwe4yl5he09Fsb_a8WtMV0PZX36q0VxIyPZK0c1X0EMHkC6ZCr9fLrPFRjd2ZJNt9yKVQ/exec", { method: 'POST', mode: 'no-cors', body: new URLSearchParams(form).toString() });
+      // フォームのデータをURLパラメータ形式に変換
+      const params = new URLSearchParams(form);
+      
+      // 送信日時と、GAS側で振り分けるための目印（formType）を追加
+      params.append('timestamp', new Date().toLocaleString('ja-JP'));
+      params.append('formType', 'cast'); 
+
+      // ⚠️ あなたのGASのURLに書き換えてください
+      await fetch("YOUR_GAS_URL", { 
+        method: 'POST', 
+        mode: 'no-cors', 
+        body: params.toString() 
+      });
+      
       setIsSent(true);
-    } catch (e) { setSubmitError("通信エラーが発生しました。"); } finally { setIsSubmitting(false); }
+    } catch (e) { 
+      setSubmitError("通信エラーが発生しました。"); 
+    } finally { 
+      setIsSubmitting(false); 
+    }
   };
 
   return (
