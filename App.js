@@ -232,7 +232,7 @@ try {
       searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
       searchParams.append('formType', 'cast'); 
 
-      await fetch("https://script.google.com/macros/s/AKfycbxeeqsgOqpOjDCntv2F8Ry2f2gzqqbQUSYsJy0zkTCQOQPS2fE6_FgLIZ0ivz6AZqmjCA/exec", { 
+      await fetch("https://script.google.com/macros/s/AKfycbzHlt307bv8R9xfEOZTdeNhZNwtmD9d-bC3a7Ja7M1-4_EScQSTF9TlV35DHDez1NeJ6A/exec", { 
         method: 'POST', 
         mode: 'no-cors', 
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
