@@ -220,7 +220,7 @@ export default function App() {
 
     setIsSubmitting(true);
     try {
-      await fetch("YOUR_GAS_URL", { method: 'POST', mode: 'no-cors', body: new URLSearchParams(form).toString() });
+      await fetch("https://script.google.com/macros/s/AKfycbwe4yl5he09Fsb_a8WtMV0PZX36q0VxIyPZK0c1X0EMHkC6ZCr9fLrPFRjd2ZJNt9yKVQ/exec", { method: 'POST', mode: 'no-cors', body: new URLSearchParams(form).toString() });
       setIsSent(true);
     } catch (e) { setSubmitError("通信エラーが発生しました。"); } finally { setIsSubmitting(false); }
   };
