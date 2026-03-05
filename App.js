@@ -30,7 +30,6 @@ const ages = Array.from({ length: 43 }, (_, i) => (18 + i).toString());
 const w_range = Array.from({ length: 41 }, (_, i) => (40 + i).toString());
 const bh_range = Array.from({ length: 51 }, (_, i) => (60 + i).toString());
 const hourlyWages = Array.from({ length: 15 }, (_, i) => ((i + 1) * 1000).toLocaleString());
-hourlyWages.push("15,000以上");
 
 // --- 共通コンポーネント ---
 const Section = ({ title, description, children }) => (
@@ -239,7 +238,7 @@ export default function App() {
       searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
       searchParams.append('formType', 'cast'); 
 
-      await fetch("https://script.google.com/macros/s/AKfycbzHlt307bv8R9xfEOZTdeNhZNwtmD9d-bC3a7Ja7M1-4_EScQSTF9TlV35DHDez1NeJ6A/exec", { 
+      await fetch("https://script.google.com/macros/s/AKfycbxPwT9m3N4izsgdjgBbD28nVhVkorO4Ok9WSqf4D3Ko0GVxMZSgz5LaDnsaBSinfesbXA/exec", { 
         method: 'POST', 
         mode: 'no-cors', 
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
