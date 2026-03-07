@@ -244,7 +244,7 @@ export default function App() {
       searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
       searchParams.append('formType', 'cast'); 
 
-      await fetch("https://script.google.com/macros/s/AKfycbxPwT9m3N4izsgdjgBbD28nVhVkorO4Ok9WSqf4D3Ko0GVxMZSgz5LaDnsaBSinfesbXA/exec", { 
+      await fetch("https://script.google.com/macros/s/AKfycbyPYQCbTrMlXpmxk6yi69dP3xMB2hloQzbGrGyckgPKh1_T2zsCD0-P1oICwIO9ytmHWQ/exec", { 
         method: 'POST', 
         mode: 'no-cors', 
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
