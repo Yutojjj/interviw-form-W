@@ -313,11 +313,11 @@ export default function App() {
               </View>
 
               <View style={styles.row}>
-                <InputField label="身長(cm)" placeholder="160" keyboardType="numeric" value={form.height} onChangeText={(v) => updateField('height', v)} error={errors.height} />
+                <InputField label="身長(cm)" placeholder="160" keyboardType="numeric" value={form.height} onChangeText={(v) => updateField('height', v)}  />
                 <View style={{width: 10}} />
-                <InputField label="体重(kg)" placeholder="45" keyboardType="numeric" value={form.weight} onChangeText={(v) => updateField('weight', v)} error={errors.weight} />
+                <InputField label="体重(kg)" placeholder="45" keyboardType="numeric" value={form.weight} onChangeText={(v) => updateField('weight', v)}/>
                 <View style={{width: 10}} />
-                <DropdownSelector label="カップ" options={['A','B','C','D','E','F','G','H','I','J']} selectedValue={form.cup} onSelect={(v) => updateField('cup', v)} suffix="カップ" error={errors.cup} />
+                <DropdownSelector label="カップ" options={['A','B','C','D','E','F','G','H','I','J']} selectedValue={form.cup} onSelect={(v) => updateField('cup', v)} suffix="カップ"/>
               </View>
 
               <View style={styles.labelRow}><Text style={styles.label}>B / W / H (各cm)</Text></View>
