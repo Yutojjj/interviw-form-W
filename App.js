@@ -279,7 +279,7 @@ export default function App() {
               担当者をお待ちください。
             </Text>
           </View>
-          <View style={styles.successButtonRow}>
+          <div style={styles.successButtonRow}>
             <TouchableOpacity style={[styles.backButton, { backgroundColor: '#888' }]} onPress={() => setIsSent(false)} >
               <Text style={styles.backButtonText}>入力し直す</Text>
             </TouchableOpacity>
@@ -287,7 +287,7 @@ export default function App() {
             <TouchableOpacity style={styles.backButton} onPress={handleClose} >
               <Text style={styles.backButtonText}>画面を閉じる</Text>
             </TouchableOpacity>
-          </View>
+          </div>
         </View>
       ) : (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
@@ -297,6 +297,7 @@ export default function App() {
             <Section title="基本プロフィール">
               <InputField label="お名前" placeholder="例：山田 花子" required value={form.name} onChangeText={(v) => updateField('name', v)} error={errors.name} />
               <InputField label="かな" placeholder="例：やまだ はなこ" required value={form.kana} onChangeText={(v) => updateField('kana', v)} error={errors.kana} />
+              <InputField label="源氏名" placeholder="希望があれば" value={form.stageName} onChangeText={(v) => updateField('stageName', v)} />
               
               <View style={styles.labelRow}><Text style={styles.label}>生年月日</Text><Text style={styles.requiredTag}>必須</Text></View>
               <View style={styles.row}>
@@ -319,6 +320,15 @@ export default function App() {
                 <DropdownSelector label="カップ" options={['A','B','C','D','E','F','G','H','I','J']} selectedValue={form.cup} onSelect={(v) => updateField('cup', v)} suffix="カップ" error={errors.cup} />
               </View>
 
+              <View style={styles.labelRow}><Text style={styles.label}>B / W / H (各cm)</Text></View>
+              <View style={styles.row}>
+                <InputField label="B" placeholder="80" keyboardType="numeric" value={form.b} onChangeText={(v) => updateField('b', v)} flex={1} />
+                <View style={{width: 10}} />
+                <InputField label="W" placeholder="60" keyboardType="numeric" value={form.w} onChangeText={(v) => updateField('w', v)} flex={1} />
+                <View style={{width: 10}} />
+                <InputField label="H" placeholder="85" keyboardType="numeric" value={form.h} onChangeText={(v) => updateField('h', v)} flex={1} />
+              </View>
+
               <InputField label="携帯番号" placeholder="09012345678" keyboardType="phone-pad" required value={form.phone} onChangeText={(v) => updateField('phone', v)} error={errors.phone} />
               <InputField label="現住所" multiline placeholder="愛知県名古屋市..." required value={form.address} onChangeText={(v) => updateField('address', v)} error={errors.address} />
               
@@ -326,43 +336,125 @@ export default function App() {
               {form.domicileStatus === 'その他' && <InputField label="本籍地詳細" placeholder="都道府県から" required value={form.domicileCustom} onChangeText={(v) => updateField('domicileCustom', v)} error={errors.domicileCustom} />}
               
               <SelectButtons label="お住まい状況" options={['実家', '一人暮らし', '友人宅', '彼氏と同居','その他']} required selectedValue={form.livingStatus} onSelect={(v) => updateField('livingStatus', v)} error={errors.livingStatus} />
+              {form.livingStatus === 'その他' && <InputField label="詳細" placeholder="例：寮など" required value={form.livingStatusCustom} onChangeText={(v) => updateField('livingStatusCustom', v)} error={errors.livingStatusCustom} />}
             </Section>
 
             <Section title="緊急連絡先">
               <InputField label="ご氏名" required value={form.emName} onChangeText={(v) => updateField('emName', v)} error={errors.emName} />
               <SelectButtons label="続柄" options={['父', '母', '兄', '弟', '姉', '祖父母', 'その他']} required selectedValue={form.emRelationStatus} onSelect={(v) => updateField('emRelationStatus', v)} error={errors.emRelationStatus} />
+              {form.emRelationStatus === 'その他' && <InputField label="具体的な続柄" required value={form.emRelationCustom} onChangeText={(v) => updateField('emRelationCustom', v)} error={errors.emRelationCustom} />}
               <InputField label="電話番号" required keyboardType="phone-pad" value={form.emPhone} onChangeText={(v) => updateField('emPhone', v)} error={errors.emPhone} />
               <SelectButtons label="住所" options={['現住所と同じ', 'その他']} required selectedValue={form.emAddressStatus} onSelect={(v) => updateField('emAddressStatus', v)} error={errors.emAddressStatus} />
+              {form.emAddressStatus === 'その他' && <InputField label="住所詳細" multiline required value={form.emAddressCustom} onChangeText={(v) => updateField('emAddressCustom', v)} error={errors.emAddressCustom} />}
+            </Section>
+
+            <Section title="SNS情報">
+              <View style={styles.dynamicSubSection}>
+                <Text style={styles.subSectionTitle}>▼フォロワー数の多いアカウントがあれば是非ご記入ください！</Text>
+                <View style={styles.row}>
+                  <InputField label="Instagram ID" placeholder="@id" value={form.instaID} onChangeText={(v) => updateField('instaID', v)} />
+                  <View style={{width: 8}} />
+                  <InputField label="フォロワー数" placeholder="例: 1000" keyboardType="numeric" value={form.instaFollowers} onChangeText={(v) => updateField('instaFollowers', v)} />
+                </View>
+                <View style={styles.row}>
+                  <InputField label="X ID" placeholder="@id" value={form.xID} onChangeText={(v) => updateField('xID', v)} />
+                  <View style={{width: 8}} />
+                  <InputField label="フォロワー数" placeholder="例: 500" keyboardType="numeric" value={form.xFollowers} onChangeText={(v) => updateField('xFollowers', v)} />
+                </View>
+                <View style={styles.row}>
+                  <InputField label="TikTok ID" placeholder="@id" value={form.tiktokID} onChangeText={(v) => updateField('tiktokID', v)} />
+                  <View style={{width: 8}} />
+                  <InputField label="フォロワー数" placeholder="例: 2000" keyboardType="numeric" value={form.tiktokFollowers} onChangeText={(v) => updateField('tiktokFollowers', v)} />
+                </View>
+              </View>
             </Section>
 
             <Section title="勤務条件・希望">
               <SelectButtons label="応募方法" options={['紹介','WARPスタッフの紹介','求人広告','その他']} required selectedValue={form.applyMethod} onSelect={(v) => updateField('applyMethod', v)} error={errors.applyMethod} />
               {['紹介','WARPスタッフの紹介'].includes(form.applyMethod) && <InputField label="紹介者名" required value={form.introducer} onChangeText={(v) => updateField('introducer', v)} error={errors.introducer} />}
+              {form.applyMethod === 'その他' && <InputField label="詳細" required value={form.applyMethodCustom} onChangeText={(v) => updateField('applyMethodCustom', v)} error={errors.applyMethodCustom} />}
               
               <SelectButtons label="週何回入れますか" options={['未定','5-6日','3-4日','1-2日','0-1日']} required selectedValue={form.daysPerWeek} onSelect={(v) => updateField('daysPerWeek', v)} error={errors.daysPerWeek} />
               <MultiSelectButtons label="何曜日入れますか" options={['未定','月','火','水','木','金','土']} required selectedValues={form.availableDays} onToggle={(v) => toggleMulti('availableDays', v)} error={errors.availableDays} />
               <DropdownSelector label="希望時給" options={['5000円','6000円','7000円','8000円','9000円','10000円','15000円以上']} selectedValue={form.desiredWage} onSelect={(v) => updateField('desiredWage', v)} required error={errors.desiredWage} />
               
-              <MultiSelectButtons label="志望動機" options={['興味があった', 'お金を稼ぎたい', '社会貢献', '自分磨き', 'その他']} required selectedValues={form.motivationStatus} onToggle={(v) => toggleMulti('motivationStatus', v)} error={errors.motivationStatus} />
+              <MultiSelectButtons label="志望動機" options={['興味があった', 'お金を稼ぎたい', '自分磨き', 'その他']} required selectedValues={form.motivationStatus} onToggle={(v) => toggleMulti('motivationStatus', v)} error={errors.motivationStatus} />
+              {form.motivationStatus.includes('その他') && <InputField label="志望動機の詳細" multiline value={form.motivationCustom} onChangeText={(v) => updateField('motivationCustom', v)} />}
             </Section>
 
             <Section title="時間・送り">
               <SelectButtons label="体験時時間" options={['LASTまで', '24時まで', '終電まで', 'その他']} required selectedValue={form.trialWorkTimeStatus} onSelect={(v) => updateField('trialWorkTimeStatus', v)} error={errors.trialWorkTimeStatus} />
+              {form.trialWorkTimeStatus === 'その他' && <InputField label="詳細" value={form.trialWorkTimeCustom} onChangeText={(v) => updateField('trialWorkTimeCustom', v)} />}
+              
+              <SelectButtons label="入店後時間" options={['LASTまで', '24時まで', '終電まで', 'その他']} required selectedValue={form.postWorkTimeStatus} onSelect={(v) => updateField('postWorkTimeStatus', v)} error={errors.postWorkTimeStatus} />
+              {form.postWorkTimeStatus === 'その他' && <InputField label="詳細" value={form.postWorkTimeCustom} onChangeText={(v) => updateField('postWorkTimeCustom', v)} />}
+
               <SelectButtons label="送り先エリア：体験時" options={['現住所と同じ', 'その他']} required selectedValue={form.deliveryTrialStatus} onSelect={(v) => updateField('deliveryTrialStatus', v)} error={errors.deliveryTrialStatus} />
+              {form.deliveryTrialStatus === 'その他' && <InputField label="詳細" value={form.deliveryTrialCustom} onChangeText={(v) => updateField('deliveryTrialCustom', v)} />}
+
               <SelectButtons label="送り先エリア：入店後" options={['現住所と同じ', 'その他']} required selectedValue={form.deliveryPostStatus} onSelect={(v) => updateField('deliveryPostStatus', v)} error={errors.deliveryPostStatus} />
+              {form.deliveryPostStatus === 'その他' && <InputField label="詳細" value={form.deliveryPostCustom} onChangeText={(v) => updateField('deliveryPostCustom', v)} />}
             </Section>
 
             <Section title="勤務情報">
               <SelectButtons label="現在の職業" options={['学生','会社員','フリーター/アルバイト','自営業','なし']} required selectedValue={form.jobDay} onSelect={(v) => updateField('jobDay', v)} error={errors.jobDay} />
+              {(form.jobDay !== 'なし' && form.jobDay !== '学生') && (
+                <View style={styles.dynamicSubSection}>
+                  <InputField label="現在の会社/店名" value={form.currentJobName} onChangeText={(v) => updateField('currentJobName', v)} />
+                  <SelectButtons label="業種" options={industryOptions} selectedValue={form.currentJobIndustry} onSelect={(v) => updateField('currentJobIndustry', v)} />
+                  <InputField label="月収/給与" value={form.currentJobWage} onChangeText={(v) => updateField('currentJobWage', v)} />
+                  <InputField label="在籍期間" value={form.currentJobPeriod} onChangeText={(v) => updateField('currentJobPeriod', v)} />
+                </View>
+              )}
+              <MultiSelectButtons label="語学" options={['日本語のみ', '英語', '中国語', 'その他']} selectedValues={form.language} onToggle={(v) => toggleMulti('language', v)} />
+              {form.language.includes('その他') && <InputField label="具体的な語学" value={form.languageCustom} onChangeText={(v) => updateField('languageCustom', v)} />}
+              
               <SelectButtons label="お酒" options={['強い','飲める','少し','NG']} required selectedValue={form.alcohol} onSelect={(v) => updateField('alcohol', v)} error={errors.alcohol} />
               <SelectButtons label="水商売の経験" options={['ある', 'ない']} required selectedValue={form.nightJobExp} onSelect={(v) => updateField('nightJobExp', v)} error={errors.nightJobExp} />
             </Section>
 
             {form.nightJobExp === 'ある' && (
               <Section title="過去の職歴 (夜職)">
-                {[1,2,3].map(n => <WorkHistoryCard key={n} symbol={n} prefix={`n${n}`} data={form} updateField={updateField} />)}
+                {[1,2,3,4,5].map(n => <WorkHistoryCard key={n} symbol={n} prefix={`n${n}`} data={form} updateField={updateField} />)}
               </Section>
             )}
+
+            <Section title="詳細情報">
+              <View style={styles.row}>
+                <InputField label="趣味" value={form.hobby} onChangeText={(v) => updateField('hobby', v)} />
+                <View style={{width:10}} /><InputField label="特技" value={form.skill} onChangeText={(v) => updateField('skill', v)} />
+              </View>
+              <InputField label="保有資格" value={form.qualifications} onChangeText={(v) => updateField('qualifications', v)} />
+              <InputField label="月売上目標" value={form.salesTarget} onChangeText={(v) => updateField('salesTarget', v)} />
+              <InputField label="店への希望条件" multiline value={form.shopConditions} onChangeText={(v) => updateField('shopConditions', v)} />
+              
+              <MultiSelectButtons label="レンタル希望" options={['ドレス', 'ヒール', 'ハンカチ', 'ポーチ']} selectedValues={form.rental} onToggle={(v) => toggleMulti('rental', v)} />
+              
+              <SelectButtons label="撮影/掲載" options={['できる', 'できない']} selectedValue={form.shooting} onSelect={(v) => updateField('shooting', v)} />
+              {form.shooting === 'できる' && <MultiSelectButtons label="掲載媒体" options={['ナイツ', '公式サイト', '看板']} selectedValues={form.shootingDetail} onToggle={(v) => toggleMulti('shootingDetail', v)} />}
+              
+              <SelectButtons label="バースデー" options={['する', 'しない']} selectedValue={form.birthdayWill} onSelect={(v) => updateField('birthdayWill', v)} />
+              
+              <SelectButtons label="同伴・アフター" options={['できる', 'できない']} selectedValue={form.accompaniment} onSelect={(v) => updateField('accompaniment', v)} />
+              {form.accompaniment === 'できない' && <InputField label="できない理由" value={form.accompanimentCustom} onChangeText={(v) => updateField('accompanimentCustom', v)} />}
+
+              <SelectButtons label="通勤手段" options={['車', '電車', '自転車', 'その他']} selectedValue={form.transport} onSelect={(v) => updateField('transport', v)} />
+              {form.transport === 'その他' && <InputField label="詳細" value={form.transportCustom} onChangeText={(v) => updateField('transportCustom', v)} />}
+
+              <SelectButtons label="借金" options={['ある', 'ない']} selectedValue={form.debt} onSelect={(v) => updateField('debt', v)} />
+              {form.debt === 'ある' && <InputField label="いくらありますか" value={form.debtDetail} onChangeText={(v) => updateField('debtDetail', v)} />}
+              
+              <SelectButtons label="持病" options={['ある', 'ない']} selectedValue={form.illness} onSelect={(v) => updateField('illness', v)} />
+              {form.illness === 'ある' && <InputField label="持病の内容" value={form.illnessDetail} onChangeText={(v) => updateField('illnessDetail', v)} />}
+              
+              <SelectButtons label="タトゥー" options={['ある', 'ない']} selectedValue={form.tattoo} onSelect={(v) => updateField('tattoo', v)} />
+              {form.tattoo === 'ある' && <InputField label="部位・大きさ" value={form.tattooDetail} onChangeText={(v) => updateField('tattooDetail', v)} />}
+
+              <MultiSelectButtons label="家族構成" options={['独身', '夫がいる', 'こどもがいる']} selectedValues={form.familyStatus} onToggle={(v) => toggleMulti('familyStatus', v)} />
+              {form.familyStatus.includes('こどもがいる') && <InputField label="お子様の人数・年齢" value={form.childrenDetail} onChangeText={(v) => updateField('childrenDetail', v)} />}
+              
+              <SelectButtons label="身内の承諾" options={['承認を得ている', '承認を得ていない']} selectedValue={form.familyApproval} onSelect={(v) => updateField('familyApproval', v)} />
+            </Section>
 
             <View style={styles.consentCard}><Text style={styles.consentText}>記入内容に事実に相違ない場合、チェックしてください</Text><Switch value={isAgreed} onValueChange={(v) => setIsAgreed(v)} trackColor={{ false: "#ccc", true: "#FF77A9" }} /></View>
             <TouchableOpacity style={[styles.submitButton, (!isAgreed || isSubmitting) && styles.submitButtonDisabled]} onPress={handleViewSubmit} disabled={!isAgreed || isSubmitting}>
@@ -426,4 +518,5 @@ const styles = StyleSheet.create({
   backButton: { backgroundColor: '#FF77A9', paddingVertical: 15, borderRadius: 12, flex: 1, alignItems: 'center', elevation: 2 },
   backButtonText: { ...fontSettings, color: '#fff', fontWeight: 'bold', fontSize: 14 },
   dynamicSubSection: { marginTop: 15, padding: 10, backgroundColor: '#FFF5F7', borderRadius: 10, borderLeftWidth: 4, borderLeftColor: '#FF77A9' },
+  subSectionTitle: { ...fontSettings, fontSize: 13, color: '#D87093', fontWeight: 'bold', marginBottom: 12, textAlign: 'center' },
 });
