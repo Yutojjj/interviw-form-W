@@ -221,7 +221,7 @@ export default function App() {
     setSubmitError(""); setIsSent(false);
     let newErrors = {};
     const requiredList = [
-      'name', 'kana', 'birthY', 'birthM', 'birthD', 'age', 'zodiac', 'bloodType', 'phone', 'address', 'domicileStatus', 'height', 'weight', 'cup',
+      'name', 'kana', 'birthY', 'birthM', 'birthD', 'age', 'zodiac', 'bloodType', 'phone', 'address', 'domicileStatus',
       'livingStatus', 'jobDay', 'applyMethod', 'daysPerWeek', 'availableDays', 'desiredWage', 'nightJobExp',
       'deliveryTrialStatus', 'deliveryPostStatus', 'motivationStatus', 'emName', 'emRelationStatus', 'emPhone', 'emAddressStatus', 'alcohol', 'trialWorkTimeStatus', 'postWorkTimeStatus'
     ];
@@ -313,7 +313,7 @@ export default function App() {
               </View>
 
               <View style={styles.row}>
-                <InputField label="身長(cm)" placeholder="160" keyboardType="numeric" value={form.height} onChangeText={(v) => updateField('height', v)}  />
+                <InputField label="身長(cm)" placeholder="160" keyboardType="numeric" value={form.height} onChangeText={(v) => updateField('height', v)} />
                 <View style={{width: 10}} />
                 <InputField label="体重(kg)" placeholder="45" keyboardType="numeric" value={form.weight} onChangeText={(v) => updateField('weight', v)}/>
                 <View style={{width: 10}} />
