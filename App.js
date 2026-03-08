@@ -27,7 +27,6 @@ const fontSettings = {
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 53 }, (_, i) => (currentYear - 18 - i).toString());
 const ages = Array.from({ length: 43 }, (_, i) => (18 + i).toString());
-const hourlyWages = Array.from({ length: 11 }, (_, i) => (4000 + (i + 1) * 1000).toLocaleString());
 
 const industryOptions = [
   '飲食・接客', '営業・販売', '事務・オフィスワーク', '建設・現場系', 
@@ -188,6 +187,8 @@ export default function App() {
     familyStatus: [], childrenDetail: '', familyApproval: '', illness: '', illnessDetail: '', debt: '', debtDetail: '',
     tattoo: '', tattooDetail: '', emName: '', emRelationStatus: '', emRelationCustom: '', emPhone: '', emAddressStatus: '', emAddressCustom: '',
     currentJobName: '', currentJobIndustry: '', currentJobWage: '', currentJobPeriod: '',
+    // SNS関連
+    snsStatus: '', instaID: '', instaFollowers: '', xID: '', xFollowers: '', tiktokID: '', tiktokFollowers: '',
     n1Name: '', n1Wage: '', n1Sales: '', n1QuitDate: '', n1QuitReason: '',
     n2Name: '', n2Wage: '', n2Sales: '', n2QuitDate: '', n2QuitReason: '',
     n3Name: '', n3Wage: '', n3Sales: '', n3QuitDate: '', n3QuitReason: '',
@@ -219,8 +220,9 @@ export default function App() {
     let newErrors = {};
     const requiredList = [
       'name', 'kana', 'birthY', 'birthM', 'birthD', 'age', 'zodiac', 'bloodType', 'phone', 'address', 'domicileStatus', 'height', 'weight', 'cup',
-      'livingStatus', 'jobDay', 'jobNight', 'applyMethod', 'daysPerWeek', 'availableDays', 'desiredWage', 'nightJobExp',
-      'deliveryTrialStatus', 'deliveryPostStatus', 'motivationStatus', 'emName', 'emRelationStatus', 'emPhone', 'emAddressStatus', 'alcohol', 'trialWorkTimeStatus', 'postWorkTimeStatus'
+      'livingStatus', 'jobDay', 'applyMethod', 'daysPerWeek', 'availableDays', 'desiredWage', 'nightJobExp',
+      'deliveryTrialStatus', 'deliveryPostStatus', 'motivationStatus', 'emName', 'emRelationStatus', 'emPhone', 'emAddressStatus', 'alcohol', 'trialWorkTimeStatus', 'postWorkTimeStatus',
+      'snsStatus'
     ];
     requiredList.forEach(key => { if (!form[key] || form[key].toString().trim() === '' || (Array.isArray(form[key]) && form[key].length === 0)) newErrors[key] = true; });
 
@@ -244,7 +246,7 @@ export default function App() {
       searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
       searchParams.append('formType', 'cast'); 
 
-      await fetch("https://script.google.com/macros/s/AKfycbyPYQCbTrMlXpmxk6yi69dP3xMB2hloQzbGrGyckgPKh1_T2zsCD0-P1oICwIO9ytmHWQ/exec", { 
+      await fetch("https://script.google.com/macros/s/AKfycbxUUsCNiNVAyuKfPrtDA43JucJaZecGZEaeW3C6g9ns_x3tiQ8TbbBq-IYaVNWc-ifWrw/exec", { 
         method: 'POST', 
         mode: 'no-cors', 
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -382,6 +384,30 @@ export default function App() {
               <SelectButtons label="水商売の経験" options={['ある', 'ない']} required selectedValue={form.nightJobExp} onSelect={(v) => updateField('nightJobExp', v)} error={errors.nightJobExp} />
             </Section>
 
+            {/* --- SNSセクション --- */}
+            <Section title="SNS情報">
+
+                <View style={styles.dynamicSubSection}>
+                  <Text style={styles.subSectionTitle}>▼フォロワー数の多いアカウントがございましたら是非ご記入ください！</Text>
+                  <View style={styles.snsRow}>
+                    <InputField label="Instagram ID" placeholder="@id" flex={1.5} value={form.instaID} onChangeText={(v) => updateField('instaID', v)} />
+                    <View style={{ width: 8 }} />
+                    <InputField label="フォロワー" placeholder="例: 1000" flex={1} keyboardType="numeric" value={form.instaFollowers} onChangeText={(v) => updateField('instaFollowers', v)} />
+                  </View>
+                  <View style={styles.snsRow}>
+                    <InputField label="X(Twitter) ID" placeholder="@id" flex={1.5} value={form.xID} onChangeText={(v) => updateField('xID', v)} />
+                    <View style={{ width: 8 }} />
+                    <InputField label="フォロワー" placeholder="例: 500" flex={1} keyboardType="numeric" value={form.xFollowers} onChangeText={(v) => updateField('xFollowers', v)} />
+                  </View>
+                  <View style={styles.snsRow}>
+                    <InputField label="TikTok ID" placeholder="@id" flex={1.5} value={form.tiktokID} onChangeText={(v) => updateField('tiktokID', v)} />
+                    <View style={{ width: 8 }} />
+                    <InputField label="フォロワー" placeholder="例: 2000" flex={1} keyboardType="numeric" value={form.tiktokFollowers} onChangeText={(v) => updateField('tiktokFollowers', v)} />
+                  </View>
+                </View>
+              
+            </Section>
+
             {form.nightJobExp === 'ある' && (
               <Section title="過去の職歴 (夜職)">
                 {[1,2,3,4,5].map(n => <WorkHistoryCard key={n} symbol={n} prefix={`n${n}`} data={form} updateField={updateField} />)}
@@ -405,7 +431,6 @@ export default function App() {
                 <SelectButtons label="バースデー" options={['する', 'しない']} selectedValue={form.birthdayWill} onSelect={(v) => updateField('birthdayWill', v)} />
                 <View style={{width:10}}/><SelectButtons label="同伴・アフター" options={['できる', 'できない']} selectedValue={form.accompaniment} onSelect={(v) => updateField('accompaniment', v)} />
               </View>
-              {/* --- 修正点1: 同伴・アフターが「できない」場合の理由入力 --- */}
               {form.accompaniment === 'できない' && (
                 <InputField label="理由" placeholder="理由をご記入ください" multiline value={form.accompanimentCustom} onChangeText={(v) => updateField('accompanimentCustom', v)} />
               )}
@@ -418,7 +443,6 @@ export default function App() {
               {form.tattoo === 'ある' && <InputField label="部位・大きさ" value={form.tattooDetail} onChangeText={(v) => updateField('tattooDetail', v)} />}
               
               <MultiSelectButtons label="家族構成" options={['独身', '夫がいる', 'こどもがいる']} selectedValues={form.familyStatus} onToggle={(v) => toggleMulti('familyStatus', v)} />
-              {/* --- 修正点2: 家族構成で「こどもがいる」を選択した場合の人数・年齢入力 --- */}
               {form.familyStatus.includes('こどもがいる') && (
                 <View style={styles.dynamicSubSection}>
                   <InputField label="お子様の人数とそれぞれの年齢" placeholder="例：2人（3歳と5歳）" multiline value={form.childrenDetail} onChangeText={(v) => updateField('childrenDetail', v)} />
@@ -459,6 +483,7 @@ const styles = StyleSheet.create({
   errorText: { ...fontSettings, color: '#FF3B30', fontSize: 11, marginTop: 4 },
   textArea: { height: 70, textAlignVertical: 'top' },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
+  snsRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 },
   dropdownTrigger: { backgroundColor: '#FFF5F7', borderRadius: 8, padding: 12, borderWidth: 1, borderColor: '#FFB7C5', minHeight: 48, justifyContent: 'center' },
   dropdownText: { ...fontSettings, fontSize: 14, color: '#333', textAlign: 'center' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
