@@ -215,7 +215,7 @@ export default function App() {
     }
   };
 
-  const handleClose = () => { Linking.openURL('https://warp-net.jp/'); };
+  const handleClose = () => { Linking.openURL('https://www.nights.fun/aichi/A2301/A230101/warp/'); };
 
   const handleViewSubmit = async () => {
     setSubmitError(""); setIsSent(false);
