@@ -290,15 +290,41 @@ export default function App() {
               {form.deliveryPostStatus === 'その他' && <InputField label="詳細" value={form.deliveryPostCustom} onChangeText={(v) => updateField('deliveryPostCustom', v)} />}
             </Section>
             <Section title="勤務情報">
-              <SelectButtons label="現在の職業" options={['学生', 'フリーター/アルバイト', '会社員', '自営業', 'なし']} required selectedValue={form.jobDay} onSelect={(v) => updateField('jobDay', v)} error={errors.jobDay} />
-              {(form.jobDay !== 'なし' && form.jobDay !== '学生') && (
-                <View style={styles.dynamicSubSection}>
-                  <InputField label="現在の会社/店名" value={form.currentJobName} onChangeText={(v) => updateField('currentJobName', v)} />
-                  <SelectButtons label="業種" options={industryOptions} selectedValue={form.currentJobIndustry} onSelect={(v) => updateField('currentJobIndustry', v)} />
-                  <InputField label="月収/給与" value={form.currentJobWage} onChangeText={(v) => updateField('currentJobWage', v)} />
-                  <InputField label="在籍期間" value={form.currentJobPeriod} onChangeText={(v) => updateField('currentJobPeriod', v)} />
-                </View>
-              )}
+             <SelectButtons 
+    label="現在の職業" 
+    options={['学生', 'フリーター/アルバイト', '会社員', '自営業', 'なし']} 
+    required 
+    selectedValue={form.jobDay} 
+    onSelect={(v) => updateField('jobDay', v)} 
+    error={errors.jobDay} 
+  />
+
+  {/* 修正ポイント：jobDayが入力されており、かつ「学生」「なし」以外の時のみ表示 */}
+  {form.jobDay && !['学生', 'なし'].includes(form.jobDay) && (
+    <View style={styles.dynamicSubSection}>
+      <InputField 
+        label="現在の会社/店名" 
+        value={form.currentJobName} 
+        onChangeText={(v) => updateField('currentJobName', v)} 
+      />
+      <SelectButtons 
+        label="業種" 
+        options={industryOptions} 
+        selectedValue={form.currentJobIndustry} 
+        onSelect={(v) => updateField('currentJobIndustry', v)} 
+      />
+      <InputField 
+        label="月収/給与" 
+        value={form.currentJobWage} 
+        onChangeText={(v) => updateField('currentJobWage', v)} 
+      />
+      <InputField 
+        label="在籍期間" 
+        value={form.currentJobPeriod} 
+        onChangeText={(v) => updateField('currentJobPeriod', v)} 
+      />
+    </View>
+  )}
               <MultiSelectButtons label="語学" options={['日本語のみ', '英語', '中国語', 'その他']} selectedValues={form.language} onToggle={(v) => toggleMulti('language', v)} />
               {form.language.includes('その他') && <InputField label="具体的な語学" value={form.languageCustom} onChangeText={(v) => updateField('languageCustom', v)} />}
               <SelectButtons label="お酒" options={['強い', '飲める', '少し', 'NG']} required selectedValue={form.alcohol} onSelect={(v) => updateField('alcohol', v)} error={errors.alcohol} />
