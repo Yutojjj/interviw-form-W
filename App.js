@@ -277,7 +277,7 @@ export default function App() {
               <MultiSelectButtons label="何曜日入れますか" options={['未定', '月', '火', '水', '木', '金', '土']} required selectedValues={form.availableDays} onToggle={(v) => toggleMulti('availableDays', v)} error={errors.availableDays} />
               <DropdownSelector label="希望時給" options={['5000円', '6000円', '7000円', '8000円', '9000円', '10000円', '15000円以上']} selectedValue={form.desiredWage} onSelect={(v) => updateField('desiredWage', v)} required error={errors.desiredWage} />
               <MultiSelectButtons label="志望動機" options={['興味があった', 'お金を稼ぎたい', '自分磨き', 'その他']} required selectedValues={form.motivationStatus} onToggle={(v) => toggleMulti('motivationStatus', v)} error={errors.motivationStatus} />
-              {form.motivationStatus.includes('その他') && <InputField label="志望動機の詳細" multiline value={form.motivationCustom} onChangeText={(v) => updateField('motivationCustom', v)} />}
+{form.motivationStatus.some(item => ['その他','興味があった', 'お金を稼ぎたい', '自分磨き'].includes(item))&& <InputField label="志望動機の詳細" multiline value={form.motivationCustom} onChangeText={(v) => updateField('motivationCustom', v)} />}
             </Section>
             <Section title="時間・送り">
               <SelectButtons label="体験時時間" options={['LASTまで', '24時まで', '終電まで', 'その他']} required selectedValue={form.trialWorkTimeStatus} onSelect={(v) => updateField('trialWorkTimeStatus', v)} error={errors.trialWorkTimeStatus} />
