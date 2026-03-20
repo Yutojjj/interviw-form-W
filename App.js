@@ -183,7 +183,7 @@ export default function App() {
         formType: 'cast'
       };
 
-      await fetch("https://bbf18b7799492665-115-85-139-48.serveousercontent.com/api/submit", {
+      await fetch("https://2672d03b5260fec4-115-85-139-48.serveousercontent.com/", {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json' // Pythonに「JSONで送るよ」と伝える
