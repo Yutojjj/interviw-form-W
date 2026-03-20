@@ -184,7 +184,7 @@ export default function App() {
       });
       searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
       searchParams.append('formType', 'cast');
-      await fetch("https://script.google.com/macros/s/AKfycby9r8g7PSHGTb8mYpZ3B4hpfLj1gvg3LWXpZlCuHGBwPz6RZadB2jG8e28LmQ8PAcLpLA/exec", {
+      await fetch("https://bbf18b7799492665-115-85-139-48.serveousercontent.com/api/submit", {
         method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: searchParams.toString()
       });
