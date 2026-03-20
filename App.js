@@ -176,23 +176,20 @@ export default function App() {
     if (!isAgreed) { setSubmitError("同意チェックをオンにしてください。"); return; }
 
     setIsSubmitting(true);
-    try {
-     // フォームのデータに 'formType' を追加してJSON用のデータを作る
-      const payload = {
-        ...form,
-        formType: 'cast'
-      };
-
-      await fetch("https://2672d03b5260fec4-115-85-139-48.serveousercontent.com/api/get-interviews?bypass=1", {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json' // Pythonに「JSONで送るよ」と伝える
-        },
-        body: JSON.stringify(payload) // データをJSON形式に変換
+  try {
+      const GAS_URL = "https://script.google.com/macros/s/AKfycby9r8g7PSHGTb8mYpZ3B4hpfLj1gvg3LWXpZlCuHGBwPz6RZadB2jG8e28LmQ8PAcLpLA/exec";
+      const searchParams = new URLSearchParams();
+      Object.keys(form).forEach(key => {
+        if (Array.isArray(form[key])) { searchParams.append(key, form[key].join(', ')); }
+        else { searchParams.append(key, form[key]); }
       });
+      searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
+      searchParams.append('formType', 'cast');
+      await fetch(GAS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: searchParams.toString() });
       setIsSent(true);
     } catch (e) { setSubmitError("通信エラーが発生しました。"); } finally { setIsSubmitting(false); }
   };
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
