@@ -177,16 +177,18 @@ export default function App() {
 
     setIsSubmitting(true);
     try {
-      const searchParams = new URLSearchParams();
-      Object.keys(form).forEach(key => {
-        if (Array.isArray(form[key])) { searchParams.append(key, form[key].join(', ')); }
-        else { searchParams.append(key, form[key]); }
-      });
-      searchParams.append('timestamp', new Date().toLocaleString('ja-JP'));
-      searchParams.append('formType', 'cast');
+     // フォームのデータに 'formType' を追加してJSON用のデータを作る
+      const payload = {
+        ...form,
+        formType: 'cast'
+      };
+
       await fetch("https://bbf18b7799492665-115-85-139-48.serveousercontent.com/api/submit", {
-        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: searchParams.toString()
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json' // Pythonに「JSONで送るよ」と伝える
+        },
+        body: JSON.stringify(payload) // データをJSON形式に変換
       });
       setIsSent(true);
     } catch (e) { setSubmitError("通信エラーが発生しました。"); } finally { setIsSubmitting(false); }
